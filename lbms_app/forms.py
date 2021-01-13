@@ -1,11 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserChangeForm
 from django.db.models import Q
-from django.forms import ModelChoiceField
 from django.utils.datetime_safe import date
 
-from lbms_app.models import Expense, Group
+from lbms_app.models import Expense, Category, Source
 
 User = get_user_model()
 
@@ -23,8 +21,16 @@ class CategoryChoiceField(forms.ModelChoiceField):
         super().__init__(queryset, **kwargs)
 
 
-class LbmsUserChangeForm(UserChangeForm):
-    group = ModelChoiceField(queryset=Group.objects.all())
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        exclude = 'group',
+
+
+class SourceForm(forms.ModelForm):
+    class Meta:
+        model = Source
+        exclude = 'group',
 
 
 class ExpenseForm(forms.ModelForm):
@@ -34,16 +40,3 @@ class ExpenseForm(forms.ModelForm):
         field_classes = {
             'category': CategoryChoiceField
         }
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs['users']
-        super().__init__(*args, **kwargs)
-
-    def save(self, commit=True):
-        obj = super().save(False)
-        obj.group = self.user.group
-
-        if commit:
-            obj.save()
-
-        return obj

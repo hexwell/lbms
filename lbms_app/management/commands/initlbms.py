@@ -35,7 +35,7 @@ def _init_superuser():
         user = User.objects.create_superuser(
             SUPERUSER_USERNAME,
             password=getpass(f'Password for {SUPERUSER_USERNAME}: '),
-            group=LbmsGroup.objects.get(name=ETTORE_LBMS_GROUP_NAME)
+            lbms_group=LbmsGroup.objects.get(name=ETTORE_LBMS_GROUP_NAME)
         )
 
     user.user_permissions.set(Permission.objects.all())

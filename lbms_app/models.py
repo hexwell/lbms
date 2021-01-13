@@ -14,7 +14,7 @@ class Group(models.Model):
 
 
 class User(AbstractUser):
-    group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='users')
+    lbms_group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='users')
 
 
 class Category(models.Model):
