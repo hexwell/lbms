@@ -1,9 +1,7 @@
 from getpass import getpass
 
-from django.apps import apps
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Permission, Group as PermissionGroup
+from django.contrib.auth.models import Permission, Group as PermissionsGroup
 from django.core.management import BaseCommand
 
 from lbms_app.models import Group as LbmsGroup
@@ -46,13 +44,13 @@ def _init_superuser():
 
 
 def _init_permission_group():
-    group = PermissionGroup.objects.filter(name=PERMISSION_GROUP_NAME)
+    group = PermissionsGroup.objects.filter(name=PERMISSION_GROUP_NAME)
 
     if group:
         group = group.first()
 
     else:
-        group = PermissionGroup(name=PERMISSION_GROUP_NAME)
+        group = PermissionsGroup(name=PERMISSION_GROUP_NAME)
         group.save()
 
     for user in User.objects.all():
