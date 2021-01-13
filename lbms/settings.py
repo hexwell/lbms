@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lbms_app.apps.LbmsAppConfig',
+    'admin_reorder',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'lbms.urls'
@@ -99,6 +101,21 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'lbms_app.User'
+
+ADMIN_REORDER = (
+    {
+        'app': 'auth',
+        'models': (
+            'lbms_app.User',
+            'auth.Group'
+        )
+    },
+    {
+        'app': 'lbms_app',
+    }
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

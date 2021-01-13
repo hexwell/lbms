@@ -1,7 +1,16 @@
-from django.contrib.auth.models import Permission, Group as PermissionGroup, User
+from getpass import getpass
+
+from django.apps import apps
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission, Group as PermissionGroup
 from django.core.management import BaseCommand
 
-from lbms_app.models import Group as LbmsGroup, UserGroup
+from lbms_app.models import Group as LbmsGroup
+
+User = get_user_model()
+
+SUPERUSER_USERNAME = 'hexwell'
 
 ETTORE_LBMS_GROUP_NAME = 'Ettore'
 FAMILY_LBMS_GROUP_NAME = 'Famiglia'
@@ -19,10 +28,17 @@ def _init_lbms_groups():
 
 
 def _init_superuser():
-    user = User.objects.filter(is_superuser=True).first()
+    user = User.objects.filter(is_superuser=True)
 
-    for group in LbmsGroup.objects.all():
-        UserGroup(user=user, group=group).save()
+    if user:
+        user = user.first()
+
+    else:
+        user = User.objects.create_superuser(
+            SUPERUSER_USERNAME,
+            password=getpass(f'Password for {SUPERUSER_USERNAME}: '),
+            group=LbmsGroup.objects.get(name=ETTORE_LBMS_GROUP_NAME)
+        )
 
     user.user_permissions.set(Permission.objects.all())
 

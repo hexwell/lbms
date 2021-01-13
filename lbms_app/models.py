@@ -1,6 +1,6 @@
 from datetime import date
 
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -13,12 +13,8 @@ class Group(models.Model):
         return self.name
 
 
-class UserGroup(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='users')
-
-    def __str__(self):
-        return f'{self.user} - {self.group}'
+class User(AbstractUser):
+    group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='users')
 
 
 class Category(models.Model):
@@ -33,7 +29,7 @@ class Category(models.Model):
         null=True,
         blank=True,
         on_delete=models.RESTRICT,
-        related_name='children',
+        related_name='child_set',
         verbose_name=_('parent')
     )
     add_date = models.DateField(auto_now_add=True)

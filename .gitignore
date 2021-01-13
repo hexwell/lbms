@@ -12,3 +12,6 @@ db.sqlite3
 
 # Secret
 secret
+
+# Compiled translations
+*.mo
