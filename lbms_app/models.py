@@ -41,6 +41,9 @@ class Category(models.Model):
         if self.parent == self:
             raise ValidationError(_('Parent and child nodes cannot be the same'))
 
+        if self.parent.group != self.group:
+            raise ValidationError(_('Parent and child must have the same group'))
+
     def ancestors(self):
         if self.parent:
             yield from self.parent.ancestors()
@@ -70,6 +73,10 @@ class Expense(models.Model):
     category = models.ForeignKey(Category, on_delete=models.RESTRICT, verbose_name=_('category'))
     source = models.ForeignKey(Source, on_delete=models.RESTRICT, verbose_name=_('source'))
     date = models.DateField(default=date.today, verbose_name=_('date'))
+
+    def clean(self):
+        if not (self.group == self.source.group == self.category.group):
+            raise ValidationError(_('Expense, source and category must have the same group'))
 
     def __str__(self):
         return _('€ {amount} on {date} for {category} form {source}').format(
