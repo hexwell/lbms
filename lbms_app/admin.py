@@ -8,31 +8,34 @@ from lbms_app.models import Category, Source, Expense, User
 class LbmsUserAdmin(UserAdmin):
     pass
 
-
 LbmsUserAdmin.fieldsets[0][1]['fields'] += ('lbms_group',)
 LbmsUserAdmin.add_fieldsets[0][1]['fields'] += ('lbms_group',)
+admin.site.register(User, LbmsUserAdmin)
 
 
 class GroupModelAdmin(admin.ModelAdmin):
-    def save_model(self, request, obj, *args):
-        obj.group = request.user.lbms_group
+    def get_form(self, request, *args, **kwargs):
+        class TempForm(self.__class__.form):
+            def __init__(obj, *a, **ka):
+                super(TempForm, obj).__init__(*a, **ka)
 
-        super().save_model(request, obj, *args)
+                obj.instance.lbms_group = request.user.lbms_group
+
+        kwargs['form'] = TempForm
+
+        return super().get_form(request, *args, **kwargs)
 
 
+@admin.register(Category)
 class CategoryAdmin(GroupModelAdmin):
     form = CategoryForm
 
 
+@admin.register(Source)
 class SourceAdmin(GroupModelAdmin):
     form = SourceForm
 
 
+@admin.register(Expense)
 class ExpenseAdmin(GroupModelAdmin):
     form = ExpenseForm
-
-
-admin.site.register(User, LbmsUserAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Source, SourceAdmin)
-admin.site.register(Expense, ExpenseAdmin)

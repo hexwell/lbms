@@ -21,22 +21,24 @@ class CategoryChoiceField(forms.ModelChoiceField):
         super().__init__(queryset, **kwargs)
 
 
-class CategoryForm(forms.ModelForm):
+class NoGroupForm(forms.ModelForm):
     class Meta:
+        exclude = 'lbms_group',
+
+
+class CategoryForm(NoGroupForm):
+    class Meta(NoGroupForm.Meta):
         model = Category
-        exclude = 'group',
 
 
-class SourceForm(forms.ModelForm):
-    class Meta:
+class SourceForm(NoGroupForm):
+    class Meta(NoGroupForm.Meta):
         model = Source
-        exclude = 'group',
 
 
-class ExpenseForm(forms.ModelForm):
-    class Meta:
+class ExpenseForm(NoGroupForm):
+    class Meta(NoGroupForm.Meta):
         model = Expense
-        exclude = 'group',
         field_classes = {
             'category': CategoryChoiceField
         }

@@ -2,34 +2,46 @@ from datetime import date
 
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class Group(models.Model):
-    name = models.CharField(max_length=100)
+class NamedMixin(models.Model):
+    class Meta:
+        abstract = True
 
+    name = models.CharField(max_length=100, verbose_name=_('name'))
+
+
+class Group(NamedMixin):
     def __str__(self):
         return self.name
 
 
-class User(AbstractUser):
-    lbms_group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='users')
+class GroupMixin(models.Model):
+    class Meta:
+        abstract = True
+
+    lbms_group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
 
-class Category(models.Model):
+class User(AbstractUser, GroupMixin):
+    lbms_group = models.ForeignKey(Group, on_delete=models.PROTECT)
+
+
+class Category(NamedMixin, GroupMixin):
     class Meta:
         verbose_name = _('category')
         verbose_name_plural = _('categories')
 
-    name = models.CharField(max_length=100, verbose_name=_('name'))
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='categories')
     parent = models.ForeignKey(
         'self',
         null=True,
         blank=True,
         on_delete=models.RESTRICT,
         related_name='child_set',
+        # TODO check if related query name is required
         verbose_name=_('parent')
     )
     add_date = models.DateField(auto_now_add=True)
@@ -38,11 +50,12 @@ class Category(models.Model):
         return self.name
 
     def clean(self):
-        if self.parent == self:
-            raise ValidationError(_('Parent and child nodes cannot be the same'))
+        if self.parent:
+            if self in self.parent.ancestors():
+                raise ValidationError(_('Parent and child nodes cannot be the same, or have a cyclic relationship.'))
 
-        if self.parent.group != self.group:
-            raise ValidationError(_('Parent and child must have the same group'))
+            if self.parent.lbms_group != self.lbms_group:
+                raise ValidationError('Parent and child must have the same group')
 
     def ancestors(self):
         if self.parent:
@@ -51,32 +64,36 @@ class Category(models.Model):
         yield self
 
 
-class Source(models.Model):
+class Source(NamedMixin, GroupMixin):
     class Meta:
         verbose_name = _('source')
         verbose_name_plural = _('sources')
-
-    name = models.CharField(max_length=100, verbose_name=_('name'))
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='sources')
 
     def __str__(self):
         return self.name
 
 
-class Expense(models.Model):
+class Expense(GroupMixin):
     class Meta:
         verbose_name = _('expense')
         verbose_name_plural = _('expenses')
 
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='expenses')
-    amount = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_('amount') + ' (€)')
+    amount = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_('amount') + ' (€)',
+                                 validators=[MinValueValidator(0)])
     category = models.ForeignKey(Category, on_delete=models.RESTRICT, verbose_name=_('category'))
     source = models.ForeignKey(Source, on_delete=models.RESTRICT, verbose_name=_('source'))
     date = models.DateField(default=date.today, verbose_name=_('date'))
 
     def clean(self):
-        if not (self.group == self.source.group == self.category.group):
-            raise ValidationError(_('Expense, source and category must have the same group'))
+        if not all((
+                hasattr(self, 'lbms_group', ),
+                hasattr(self, 'source'),
+                hasattr(self, 'category')
+        )):
+            raise ValidationError(_('Required fields missing.'))
+
+        if not (self.lbms_group == self.source.lbms_group == self.category.lbms_group):
+            raise ValidationError('Expense, source and category must have the same group')
 
     def __str__(self):
         return _('€ {amount} on {date} for {category} form {source}').format(
