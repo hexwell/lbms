@@ -29,6 +29,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = '*'
 
+'''
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+X_FRAME_OPTIONS = 'DENY'
+'''
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,8 +70,7 @@ ROOT_URLCONF = 'lbms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,7 +133,12 @@ ADMIN_REORDER = (
 
 USE_TZ = False
 
-LANGUAGE_CODE = 'it-it'
+TIME_ZONE = 'Europe/Rome'
+
+DATE_FORMAT = 'd/m/Y'
+DATE_INPUT_FORMATS = ('%d/%m/%Y',)
+
+LANGUAGE_CODE = 'it-it' # TODO or 'it' ?
 
 LANGUAGES = (
     ('it', _('Italian')),
