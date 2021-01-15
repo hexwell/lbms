@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-15 00:06+0100\n"
-"PO-Revision-Date: 2021-01-14 00:00+0100\n"
+"POT-Creation-Date: 2021-01-15 00:51+0100\n"
+"PO-Revision-Date: 2021-01-15 00:51+0100\n"
 "Last-Translator: Ettore Forigo\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\lbms\settings.py:128
+#: .\lbms\settings.py:144
 msgid "Italian"
 msgstr "Italiano"
 
@@ -25,54 +25,58 @@ msgstr "Italiano"
 msgid "expenses"
 msgstr "spese"
 
-#: .\lbms_app\models.py:13
+#: .\lbms_app\admin.py:17
+msgid "Welcome to the LBMS app"
+msgstr "Benvenuti nell'app LBMS"
+
+#: .\lbms_app\models.py:14
 msgid "name"
 msgstr "nome"
 
-#: .\lbms_app\models.py:34 .\lbms_app\models.py:81
+#: .\lbms_app\models.py:35 .\lbms_app\models.py:83
 msgid "category"
 msgstr "categoria"
 
-#: .\lbms_app\models.py:35
+#: .\lbms_app\models.py:36
 msgid "categories"
 msgstr "categorie"
 
-#: .\lbms_app\models.py:44
+#: .\lbms_app\models.py:45
 msgid "parent"
 msgstr "padre"
 
-#: .\lbms_app\models.py:54
+#: .\lbms_app\models.py:55
 msgid ""
 "Parent and child nodes cannot be the same, or have a cyclic relationship."
 msgstr ""
 "Il nodo non può essere padre di se stesso o avere una relazione ciclica con "
 "esso."
 
-#: .\lbms_app\models.py:68 .\lbms_app\models.py:82
+#: .\lbms_app\models.py:69 .\lbms_app\models.py:84
 msgid "source"
 msgstr "provenienza"
 
-#: .\lbms_app\models.py:69
+#: .\lbms_app\models.py:70
 msgid "sources"
 msgstr "provenienze"
 
-#: .\lbms_app\models.py:77
+#: .\lbms_app\models.py:78
 msgid "expense"
 msgstr "spesa"
 
-#: .\lbms_app\models.py:80
+#: .\lbms_app\models.py:81
 msgid "amount"
 msgstr "importo"
 
-#: .\lbms_app\models.py:83
+#: .\lbms_app\models.py:85
 msgid "date"
 msgstr "data"
 
-#: .\lbms_app\models.py:91
+#: .\lbms_app\models.py:93
 msgid "Required fields missing."
 msgstr "Campi obbligatori mancanti."
 
-#: .\lbms_app\models.py:97
+#: .\lbms_app\models.py:99
 #, python-brace-format
 msgid "€ {amount} on {date} for {category} form {source}"
 msgstr "€ {amount} il {date} per {category} da {source}"
@@ -1306,3 +1310,6 @@ msgstr ""
 #, python-format
 msgid "Delete selected %(verbose_name_plural)s"
 msgstr "Cancella %(verbose_name_plural)s selezionati/e"
+
+msgid "Welcome,"
+msgstr "Benvenuto/a,"
