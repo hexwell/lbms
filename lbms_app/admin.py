@@ -23,15 +23,17 @@ class GroupModelAdmin(admin.ModelAdmin):
         return q.filter(lbms_group=request.user.lbms_group)
 
     def get_form(self, request, *args, **kwargs):
-        class TempForm(self.__class__.form):
+        OldForm = super().get_form(request, *args, **kwargs)
+
+        class TempForm(OldForm):
             def __init__(obj, *a, **ka):
-                super(TempForm, obj).__init__(*a, **ka)
+                obj.lbms_group = request.user.lbms_group
 
-                obj.instance.lbms_group = request.user.lbms_group
+                super().__init__(*a, **ka)
 
-        kwargs['form'] = TempForm
+                obj.instance.lbms_group = obj.lbms_group
 
-        return super().get_form(request, *args, **kwargs)
+        return TempForm
 
 
 @admin.register(Category)
