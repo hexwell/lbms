@@ -125,6 +125,11 @@ ADMIN_REORDER = (
     },
     {
         'app': 'lbms_app',
+        'models': (
+            'lbms_app.Category',
+            'lbms_app.Source',
+            'lbms_app.Expense'
+        )
     }
 )
 

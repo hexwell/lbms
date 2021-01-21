@@ -18,6 +18,10 @@ admin.site.index_title = _("Welcome to the LBMS app")
 
 
 class GroupModelAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        q = super(GroupModelAdmin, self).get_queryset(request)
+        return q.filter(lbms_group=request.user.lbms_group)
+
     def get_form(self, request, *args, **kwargs):
         class TempForm(self.__class__.form):
             def __init__(obj, *a, **ka):
