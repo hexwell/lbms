@@ -1,14 +1,13 @@
 from collections import defaultdict
-from itertools import takewhile
 
 
 def unique(iterable):
     return len(set(iterable)) == 1
 
 
-def lca(nodes, ancestors):
+def lul(nodes, ancestors):
     """
-    Finds the lowest common ancestor between nodes
+    Finds the lowest level populated with ancestors for all nodes (lowest ubiquitous level)
 
     nodes: Iterable of nodes. All items must have a common ancestor
     ancestors: A function from node to an iterable of it's ancestors including itself, ordered from root to leaf.
@@ -19,21 +18,19 @@ def lca(nodes, ancestors):
 
     # Lineages start from a common root.
     # zip lineages so that each element of the zip is a level of the tree
+    # This also stops at the shortage lineage
     levels = zip(*lineages)
 
-    # Common levels have just one node in them
-    common_levels = takewhile(unique, levels)
-
     sentinel = object()
-    lowest_common_level = sentinel  # default
-    for lowest_common_level in common_levels:  # find last one
+    lowest_ubiquitous_level = sentinel  # default
+    for lowest_ubiquitous_level in levels:  # find last one
         pass
 
-    if lowest_common_level is sentinel:
+    if lowest_ubiquitous_level is sentinel:
         return None  # lca not found
 
     else:
-        return lowest_common_level[0]
+        return set(lowest_ubiquitous_level)
 
 
 def mapdict(f, d):
@@ -48,6 +45,21 @@ def hierarchies_by_root(nodes, ancestors):
         hierarchies[root].add(node)
 
     return hierarchies
+
+
+def maketrans(hierarchies, nodes, ancestors):
+    translation_table = {}
+
+    for node in nodes:
+        ancs = root, *_ = tuple(ancestors(node))
+
+        if node not in translation_table:
+            for possible_ancestor in hierarchies[root]:
+                if possible_ancestor in ancs:
+                    translation_table[node] = possible_ancestor
+                    break
+
+    return translation_table
 
 
 if __name__ == '__main__':
@@ -70,12 +82,15 @@ if __name__ == '__main__':
         yield t
 
 
-    def translate(t, st, ancestors):
-        return (t[tuple(ancestors(x))[0]] for x in st)
+    def translate(hierarchies, nodes, ancestors):
+        translation_table = maketrans(hierarchies, nodes, ancestors)
+
+        return (translation_table[node] for node in nodes)
 
 
     s = 'dffdfiicic'
+    s = 'cb'
 
-    i = mapdict(lambda nodes: lca(nodes, ancstrs), hierarchies_by_root(s, ancstrs))
+    i = mapdict(lambda nodes: lul(nodes, ancstrs), hierarchies_by_root(s, ancstrs))
 
     print(list(translate(i, s, ancstrs)))
