@@ -18,7 +18,7 @@ def lul(nodes, ancestors):
 
     # Lineages start from a common root.
     # zip lineages so that each element of the zip is a level of the tree
-    # This also stops at the shortage lineage
+    # This also stops at the shortest lineage
     levels = zip(*lineages)
 
     sentinel = object()
