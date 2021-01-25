@@ -27,7 +27,7 @@ def lul(nodes, ancestors):
         pass
 
     if lowest_ubiquitous_level is sentinel:
-        return None  # lca not found
+        return None  # lul not found
 
     else:
         return set(lowest_ubiquitous_level)
