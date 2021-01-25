@@ -28,7 +28,7 @@ class CategoryForm(NoGroupForm):
         if self.instance:
             queryset = queryset.exclude(id=self.instance.id)
 
-        self.fields['parent'] = forms.ModelChoiceField(queryset, label=_('parent').title())
+        self.fields['parent'] = forms.ModelChoiceField(queryset, required=False, label=_('parent').title())
 
 
 class SourceForm(NoGroupForm):
