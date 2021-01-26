@@ -18,7 +18,7 @@ def lul(nodes, ancestors):
 
     # Lineages start from a common root.
     # zip lineages so that each element of the zip is a level of the tree
-    # This also stops at the shortage lineage
+    # This also stops at the shortest lineage
     levels = zip(*lineages)
 
     sentinel = object()
@@ -27,7 +27,7 @@ def lul(nodes, ancestors):
         pass
 
     if lowest_ubiquitous_level is sentinel:
-        return None  # lca not found
+        return None  # lul not found
 
     else:
         return set(lowest_ubiquitous_level)
