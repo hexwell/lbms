@@ -47,17 +47,19 @@ def hierarchies_by_root(nodes, ancestors):
     return hierarchies
 
 
-def maketrans(hierarchies, nodes, ancestors):
-    translation_table = {}
+def buckets(hierarchies, nodes, ancestors):
+    translation_table = defaultdict(set)
 
     for node in nodes:
         ancs = root, *_ = tuple(ancestors(node))
 
-        if node not in translation_table:
-            for possible_ancestor in hierarchies[root]:
-                if possible_ancestor in ancs:
-                    translation_table[node] = possible_ancestor
-                    break
+        for possible_ancestor in hierarchies[root]:
+            if possible_ancestor in ancs:
+                translation_table[possible_ancestor].add(node)
+                break
+
+    for bucket_root in translation_table:
+        translation_table[bucket_root].add(bucket_root)
 
     return translation_table
 
@@ -83,7 +85,7 @@ if __name__ == '__main__':
 
 
     def translate(hierarchies, nodes, ancestors):
-        translation_table = maketrans(hierarchies, nodes, ancestors)
+        translation_table = buckets(hierarchies, nodes, ancestors)
 
         return (translation_table[node] for node in nodes)
 

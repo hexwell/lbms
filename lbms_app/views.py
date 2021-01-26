@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from lbms_app.models import Expense, Category, Source
+from utils import lul
 
 
 def expense_sum(expenses):
@@ -13,14 +14,17 @@ def month_expenses(group, year, month):
 
 
 def total_source_category(expenses, group):
-    # todo implement LCA for categories filtering
+    categories = set(expense.category for expense in expenses)
+    hierarchies = lul.hierarchies_by_root(categories, Category.ancestors)
+    luls = lul.mapdict(lambda cats: lul.lul(cats, Category.ancestors), hierarchies)
+    buckets = lul.buckets(luls, categories, Category.ancestors)
 
     return {
         'total': expense_sum(expenses),
 
         'by_category': {
-            category.name: expense_sum(expenses.filter(category=category))
-            for category in Category.objects.filter(lbms_group=group)
+            category.name: expense_sum(expenses.filter(category__in=buckets[category]))
+            for category in buckets
         },
 
         'by_source': {
