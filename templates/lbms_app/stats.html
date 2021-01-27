@@ -1,0 +1,14 @@
+{% extends "lbms_app/base.html" %}
+{% load static %}
+{% block title %} LBMS | Statistiche {% endblock %}
+{% block pagetitle %} LBMS | Statistiche {% endblock %}
+{% block scripts %}{% endblock %}
+{% block content %}
+    <script>
+        $(document).ready(function () {
+            $.get("{% url 'lbms_app:get_monthly_data' %}", function (data, status) {
+                console.log(data)
+            });
+        });
+    </script>
+{% endblock %}

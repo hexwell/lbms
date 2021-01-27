@@ -1313,3 +1313,9 @@ msgstr "Cancella %(verbose_name_plural)s selezionati/e"
 
 msgid "Welcome,"
 msgstr "Benvenuto/a,"
+
+msgid "Log out"
+msgstr "Esci"
+
+msgid "View site"
+msgstr "Statistiche"

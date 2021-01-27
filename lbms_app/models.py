@@ -40,7 +40,7 @@ class Category(NamedMixin, GroupMixin):
         null=True,
         blank=True,
         on_delete=models.RESTRICT,
-        related_name='child_set',
+        related_name='child_set',  # TODO in queries, children would look better
         # TODO check if related query name is required
         verbose_name=_('parent')
     )

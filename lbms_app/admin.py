@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from lbms_app.forms import ExpenseForm, CategoryForm, SourceForm
@@ -15,6 +16,7 @@ admin.site.register(User, LbmsUserAdmin)
 admin.site.site_header = 'LBMS'
 admin.site.site_title = 'LBMS'
 admin.site.index_title = _("Welcome to the LBMS app")
+admin.site.site_url = '/stats'  # TODO reverse('lbms_app:stats')
 
 
 class GroupModelAdmin(admin.ModelAdmin):
