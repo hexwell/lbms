@@ -5,7 +5,7 @@ def make_buckets(nodes, ancestors):
     buckets = defaultdict(set)
     sorted = set()
 
-    # Descend hierarchies
+    # Descend lineages
     for node in nodes:
         if node not in sorted:
             ancs = ancestors(node)
