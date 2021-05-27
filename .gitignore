@@ -14,7 +14,7 @@ db.sqlite3
 secret
 
 # Compiled translations
-*.mo
+# *.mo
 
 # Static files
 staticfiles/
