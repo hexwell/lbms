@@ -2,13 +2,58 @@
 {% load static %}
 {% block title %} LBMS | Statistiche {% endblock %}
 {% block pagetitle %} LBMS | Statistiche {% endblock %}
-{% block scripts %}{% endblock %}
-{% block content %}
+{% block scripts %}
     <script>
+        function draw_pie(data, canvas_id) {
+            return new Chart(document.getElementById(canvas_id).getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: $.map(data, function(value, key) { return value }),
+                            backgroundColor: [
+                                'rgba(255, 159, 64)',
+                                'rgba(153, 102, 255)',
+                                'rgba(75, 192, 192)',
+                                'rgba(255, 206, 86)',
+                                'rgba(54, 162, 235)',
+                                'rgba(255, 99, 132)',
+                            ],
+                        }],
+                        labels: Object.keys(data)
+                    },
+                    options: {}
+                });
+        }
+
+        function show_data(data, p_id) {
+            let p = document.getElementById(p_id);
+
+            $.map(data, function (value, key) {p.innerHTML += key + ': ' + value + '<br>'});
+        }
+
         $(document).ready(function () {
-            $.get("{% url 'lbms_app:get_monthly_data' %}", function (data, status) {
-                console.log(data)
+            $.get("{% url 'lbms_app:get_monthly_data' %}", function (data) {
+                let categories = draw_pie(data['by_category'], 'categories_canvas');
+                let sources = draw_pie(data['by_source'], 'sources_canvas');
+
+                show_data(data['by_category'], 'categories_data');
+                show_data(data['by_source'], 'sources_data');
             });
         });
     </script>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <h1>Gennaio</h1>
+        <div class="col-sm-6">
+            <h3>Categorie:</h3>
+            <canvas id="categories_canvas" style="width:100%; height:40vh;"></canvas>
+            <p id="categories_data"></p>
+        </div>
+        <div class="col-sm-6">
+            <h3>Provenienze:</h3>
+            <canvas id="sources_canvas" style="width:100%; height:40vh;"></canvas>
+            <p id="sources_data"></p>
+        </div>
+    </div>
 {% endblock %}
