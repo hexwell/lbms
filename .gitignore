@@ -15,3 +15,6 @@ secret
 
 # Compiled translations
 *.mo
+
+# Static files
+static/
