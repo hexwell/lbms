@@ -1,13 +1,13 @@
 pip==21.1.2
 setuptools==57.0.0
-sqlparse==0.4.1
-asgiref==3.3.4
-pytz==2021.1
+sqlparse==0.4.1         # Requirement for Django
+asgiref==3.3.4          # Requirement for Django
+pytz==2021.1            # Requirement for requirement
 Django==3.2.3
 django-modeladmin-reorder==0.3.1
-gunicorn==20.1.0
-whitenoise==5.2.0
-Brotli==1.0.9
-python-decouple==3.4
-dj-database-url==0.5.0
-psycopg2==2.8.6
+gunicorn==20.1.0        # Web server for Heroku
+whitenoise==5.2.0       # Web server for static files
+Brotli==1.0.9           # Requirement for WhiteNoise better compression
+python-decouple==3.4    # Requirement for Heroku variables
+dj-database-url==0.5.0  # Requirement for Heroku db
+psycopg2==2.8.6         # Requirement for dj-database-url
