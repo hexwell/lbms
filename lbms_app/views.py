@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.generic import TemplateView
 
 from lbms_app.models import Expense, Category, Source
@@ -36,7 +36,16 @@ def total_source_category(expenses, group):
 
 @login_required
 def get_monthly_data(request):
-    year, month = 2021, 1
+    try:
+        assert request.method == 'GET'
+
+        year, month = map(int, (request.GET.get('year'), request.GET.get('month')))
+
+        assert 2015 < year
+        assert month in range(1, 12 + 1)
+
+    except (AssertionError, TypeError, ValueError):
+        return HttpResponseBadRequest()
 
     # noinspection PyUnresolvedReferences
     group = request.user.lbms_group
@@ -49,7 +58,15 @@ def get_monthly_data(request):
 
 @login_required
 def get_yearly_data(request):
-    year = 2021
+    try:
+        assert request.method == 'GET'
+
+        year = int(request.GET.get('year'))
+
+        assert 2015 < year
+
+    except (AssertionError, TypeError, ValueError):
+        return HttpResponseBadRequest()
 
     # noinspection PyUnresolvedReferences
     group = request.user.lbms_group
@@ -65,5 +82,9 @@ def get_yearly_data(request):
     })
 
 
-class StatsView(LoginRequiredMixin, TemplateView):
-    template_name = "lbms_app/stats.html"
+class MonthlyStatsView(LoginRequiredMixin, TemplateView):
+    template_name = "lbms_app/m_stats.html"
+
+
+class YearlyStatsView(LoginRequiredMixin, TemplateView):
+    template_name = "lbms_app/y_stats.html"
