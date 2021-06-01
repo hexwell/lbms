@@ -1,1 +1,1 @@
-./manage.py compilemessages
+python3 ./manage.py compilemessages
