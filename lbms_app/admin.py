@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from lbms_app.forms import ExpenseForm, CategoryForm, SourceForm
-from lbms_app.models import Category, Source, Expense, User
+from lbms_app.models import Category, Source, Expense, User, Group
 
 
 class LbmsUserAdmin(UserAdmin):
@@ -52,3 +52,6 @@ class SourceAdmin(GroupModelAdmin):
 @admin.register(Expense)
 class ExpenseAdmin(GroupModelAdmin):
     form = ExpenseForm
+
+
+admin.site.register(Group)
