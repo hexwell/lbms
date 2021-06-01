@@ -161,7 +161,7 @@ TIME_ZONE = 'Europe/Rome'
 DATE_FORMAT = 'd/m/Y'
 DATE_INPUT_FORMATS = ('%d/%m/%Y',)
 
-LANGUAGE_CODE = 'it-it' # TODO or 'it' ?
+LANGUAGE_CODE = 'it-it'
 
 LANGUAGES = (
     ('it', _('Italian')),
