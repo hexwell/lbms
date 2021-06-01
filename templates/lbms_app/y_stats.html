@@ -12,8 +12,8 @@ let params = {
 {% endblock %}
 {% block response %}
 
-draw_bar(data['by_month'], 'monthly_canvas')
-show_data(data['by_month'], 'monthly_data');
+draw_bar(data['by_month'], 'monthly_canvas');
+show_data(Object.assign({}, ...$.map(data['by_month'], function(value, key) { return Object.fromEntries([[months[key - 1], value ]]) })), 'monthly_data');
 
 {% endblock %}
 {% block document_ready %}
