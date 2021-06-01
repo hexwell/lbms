@@ -4,6 +4,8 @@
 {% block pagetitle %} LBMS | Statistiche {% endblock %}
 {% block scripts %}
     <script>
+        let months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+
         function draw_pie(data, canvas_id) {
             return new Chart(document.getElementById(canvas_id).getContext('2d'), {
                     type: 'pie',
@@ -11,18 +13,59 @@
                         datasets: [{
                             data: $.map(data, function(value, key) { return value }),
                             backgroundColor: [
-                                'rgba(255, 159, 64)',
-                                'rgba(153, 102, 255)',
-                                'rgba(75, 192, 192)',
                                 'rgba(255, 206, 86)',
-                                'rgba(54, 162, 235)',
+                                'rgba(75, 192, 192)',
+                                'rgba(153, 102, 255)',
+                                'rgba(255, 159, 64)',
                                 'rgba(255, 99, 132)',
+                                'rgba(54, 162, 235)',
+                                'rgba(255, 206, 86)',
+                                'rgba(75, 192, 192)',
+                                'rgba(153, 102, 255)',
+                                'rgba(255, 159, 64)',
+                                'rgba(255, 99, 132)',
+                                'rgba(54, 162, 235)',
+                                'rgba(255, 206, 86)',
+                                'rgba(75, 192, 192)',
+                                'rgba(153, 102, 255)',
+                                'rgba(255, 159, 64)',
+                                'rgba(255, 99, 132)',
+                                'rgba(54, 162, 235)',
                             ],
                         }],
                         labels: Object.keys(data)
                     },
                     options: {}
                 });
+        }
+
+        function draw_bar(data, canvas_id) {
+            return new Chart(document.getElementById(canvas_id).getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: [],
+                        data: $.map(data, function(value, key) { return value }),
+                        backgroundColor: [
+                            'rgba(255, 206, 86)',
+                            'rgba(75, 192, 192)',
+                            'rgba(153, 102, 255)',
+                            'rgba(255, 159, 64)',
+                            'rgba(255, 99, 132)',
+                            'rgba(54, 162, 235)',
+                            'rgba(255, 206, 86)',
+                            'rgba(75, 192, 192)',
+                            'rgba(153, 102, 255)',
+                            'rgba(255, 159, 64)',
+                            'rgba(255, 99, 132)',
+                            'rgba(255, 99, 132)',
+                            'rgba(54, 162, 235)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+            });
         }
 
         function show_data(data, p_id) {
@@ -38,13 +81,17 @@
         }
 
         function update() {
-            {% block request %}{% endblock %}
+            {% block update %}{% endblock %}
             $.get(url, params, function (data) {
                 let categories = draw_pie(data['by_category'], 'categories_canvas');
                 let sources = draw_pie(data['by_source'], 'sources_canvas');
 
                 show_data(data['by_category'], 'categories_data');
                 show_data(data['by_source'], 'sources_data');
+
+                $('#total').html('Totale: € ' + data['total'])
+
+                {% block response %}{% endblock %}
             });
         }
 
