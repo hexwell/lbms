@@ -52,6 +52,7 @@ class SourceAdmin(GroupModelAdmin):
 @admin.register(Expense)
 class ExpenseAdmin(GroupModelAdmin):
     form = ExpenseForm
+    ordering = ('-date',)
 
 
 admin.site.register(Group)
