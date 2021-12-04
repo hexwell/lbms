@@ -96,7 +96,7 @@ class Expense(GroupMixin):
             raise ValidationError('Expense, source and category must have the same group')
 
     def __str__(self):
-        return _('€ {amount} on {date} for {category} form {source}').format(
+        return _('€ {amount} on {date} for {category} from {source}').format(
             amount=self.amount,
             date=self.date,
             category=self.category,

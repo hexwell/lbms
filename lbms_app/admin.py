@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.urls import reverse_lazy
+from django.utils.formats import date_format
 from django.utils.translation import gettext_lazy as _
 
 from lbms_app.forms import ExpenseForm, CategoryForm, SourceForm
@@ -49,9 +51,20 @@ class SourceAdmin(GroupModelAdmin):
     form = SourceForm
 
 
+@admin.display(description=_('amount') + ' (€)')
+def formatted_amount(expense):
+    return f'€ {expense.amount}'
+
+
+@admin.display(description=_('date'))
+def formatted_date(expense):
+    return date_format(expense.date, settings.DATE_FORMAT)
+
+
 @admin.register(Expense)
 class ExpenseAdmin(GroupModelAdmin):
     form = ExpenseForm
+    list_display = (formatted_amount, formatted_date, 'category', 'source')
     ordering = ('-date',)
 
 

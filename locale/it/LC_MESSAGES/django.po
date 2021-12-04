@@ -78,7 +78,7 @@ msgstr "Campi obbligatori mancanti."
 
 #: .\lbms_app\models.py:99
 #, python-brace-format
-msgid "€ {amount} on {date} for {category} form {source}"
+msgid "€ {amount} on {date} for {category} from {source}"
 msgstr "€ {amount} il {date} per {category} da {source}"
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
