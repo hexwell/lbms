@@ -68,12 +68,12 @@
             });
         }
 
-        function show_data(data, p_id) {
-            let p = document.getElementById(p_id);
+        function show_data(data, div_id) {
+            let div = $('#' + div_id)[0];
 
-            p.innerHTML = "";
+            div.innerHTML = '';
 
-            $.map(data, function (value, key) {p.innerHTML += key + ': € ' + value + '<br>'});
+            $.map(data, function (value, key) {div.innerHTML += '<tr><td class="stat_list_elem_td">' + key + '</td><td>€ <b>' + value + '</b></td></tr>'});
         }
 
         function set_year(previous = false) {
@@ -89,7 +89,7 @@
                 show_data(data['by_category'], 'categories_data');
                 show_data(data['by_source'], 'sources_data');
 
-                $('#total').html('Totale: € ' + data['total'])
+                $('#total').html('Totale: € <b>' + data['total'] + '</b>')
 
                 {% block response %}{% endblock %}
             });
