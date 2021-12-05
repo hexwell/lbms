@@ -1,9 +1,11 @@
 from datetime import date
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils.formats import date_format
 from django.utils.translation import gettext_lazy as _
 
 
@@ -97,7 +99,7 @@ class Expense(GroupMixin):
     def __str__(self):
         return _('€ {amount} on {date} for {category} from {source}').format(
             amount=self.amount,
-            date=self.date,
+            date=date_format(self.date, settings.DATE_FORMAT),
             category=self.category,
             source=self.source
         )
