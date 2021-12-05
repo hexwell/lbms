@@ -48,7 +48,7 @@ class ExpenseForm(NoGroupForm):
         category_queryset = Category.objects \
             .filter(lbms_group=self.lbms_group) \
             .filter(add_date__lt=first_of_month) \
-            .filter(Q(child_set=None) | Q(child_set__add_date__gt=first_of_month)) \
+            .filter(Q(children=None) | Q(children__add_date__gt=first_of_month)) \
             .order_by('name')
 
         source_queryset = Source.objects \
