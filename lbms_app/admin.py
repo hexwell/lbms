@@ -16,6 +16,7 @@ class LbmsUserAdmin(UserAdmin):
 LbmsUserAdmin.fieldsets[0][1]['fields'] += ('lbms_group',)
 LbmsUserAdmin.add_fieldsets[0][1]['fields'] += ('lbms_group',)
 admin.site.register(User, LbmsUserAdmin)
+
 admin.site.site_header = 'LBMS'
 admin.site.site_title = 'LBMS'
 admin.site.index_title = _("Welcome to the LBMS app")

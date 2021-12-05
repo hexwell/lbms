@@ -2,8 +2,6 @@
 
 ## TODO
 
-- django related field name (children) https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.ForeignKey.related_name
-- read about django reusable apps (https://docs.djangoproject.com/en/3.2/intro/reusable-apps/) and make changes
 - Make init_lbms modular:
   - Users group creation
   - Family lbms_group creation

@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.generic import TemplateView
 
 from lbms_app.models import Expense, Category, Source
-from utils.buckets import make_buckets
+from lbms_app.utils.buckets import make_buckets
 
 
 def expense_sum(expenses):
