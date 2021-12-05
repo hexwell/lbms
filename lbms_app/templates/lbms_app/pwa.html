@@ -1,0 +1,8 @@
+{% load static %}
+
+<meta name="theme-color" content="#417690">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="LBMS">
+<link rel="manifest" href="{% static 'manifest.json' %}">
+<link rel="shortcut icon" href="{% static 'icons/favicon.png' %}">
+<script src="{% static 'js/companion.js' %}" data-service-worker="{% static 'js/sw.js' %}"></script>
