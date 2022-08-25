@@ -1,1 +1,0 @@
-web: gunicorn lbms.wsgi:application --log-file -
